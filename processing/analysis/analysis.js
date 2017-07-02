@@ -250,7 +250,8 @@ function analyzeImage(args, fileName, analyzeCallback) {
         url: 'https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classify' + // eslint-disable-line
           '?api_key=' + args.watsonApiKey +
           '&version=2016-05-20',
-        formData: formData
+        formData: formData,
+        json: true
       }, (err, response, body) => {
         if (err) {
           console.log('Image Keywords', err);
