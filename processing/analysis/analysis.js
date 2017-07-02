@@ -234,24 +234,31 @@ function analyzeImage(args, fileName, analyzeCallback) {
     (callback) => {
       // Call Classify passing the image in the request
       // http://www.ibm.com/watson/developercloud/visual-recognition/api/v3/?curl#classify_an_image
-      fs.createReadStream(fileName).pipe(
-        request({
-          method: 'POST',
-          url: 'https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classify' + // eslint-disable-line
-            '?api_key=' + args.watsonApiKey +
-            '&version=2016-05-20',
-          headers: {
-            'Content-Length': fs.statSync(fileName).size
-          },
-          json: true
-        }, (err, response, body) => {
-          if (err) {
-            console.log('Image Keywords', err);
-          } else if (body.images && body.images.length > 0) {
-            analysis.image_keywords = body.images[0].classifiers[0].classes;
-          }
-          callback(null);
-        }));
+      var params = {
+         "classifier_ids":[
+            "traffic_1621924048"
+         ],
+         "threshold":0.1
+      }
+      var formData = {
+        images_file: fs.createReadStream(fileName),
+        parameters: JSON.stringify(params)
+      };
+
+      request({
+        method: 'POST',
+        url: 'https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classify' + // eslint-disable-line
+          '?api_key=' + args.watsonApiKey +
+          '&version=2016-05-20',
+        formData: formData
+      }, (err, response, body) => {
+        if (err) {
+          console.log('Image Keywords', err);
+        } else if (body.images && body.images.length > 0) {
+          analysis.image_keywords = body.images[0].classifiers[0].classes;
+        }
+        callback(null);
+      });
     }
   ],
   (err) => {
