@@ -236,7 +236,7 @@ function analyzeImage(args, fileName, analyzeCallback) {
       // http://www.ibm.com/watson/developercloud/visual-recognition/api/v3/?curl#classify_an_image
       var params = {
          "classifier_ids":[
-            "driver_479805433"
+            "driving_829686395"
 //            "traffic_1621924048"
          ],
          "threshold":0.1
